@@ -1,6 +1,6 @@
 {
   "name": "kaza-quick-linkshare",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a module for quick get link detail for share,is test version ",
   "main": "index.js",
   "scripts": {

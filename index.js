@@ -1,6 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const D = require('./src/DomianMatch')
+
 
 
 
@@ -8,9 +8,12 @@ const D = require('./src/DomianMatch')
 
 
 function quicklink(url, debug = false) {
-
+    //todo 加入判断网址正确性
     return new Promise((resolve, reject) => {
         axios.get(url).then(res => {
+            // console.log(res.request.host)
+            let domain = res.request.host.toString()
+            let favicon = domain + '/favicon.ico'
             const html = res.data;
             $ = cheerio.load(html, {
                 xml: true,
@@ -22,14 +25,13 @@ function quicklink(url, debug = false) {
             let firstImg = $('img').first().attr('src')
             let dataImg = $('img').attr('data-original-src')
             let getImg = $('img')
-            let domain = D(url)
+            
            
             //todo 继续优化
             // let i
             // for (i = 0; i < getImg.length; i++) {
             //     console.log(getImg[i].attribs['src'])
             // }
-
             if (debug) {
                 console.log('debuging')
                 console.log('title:', title);
@@ -37,14 +39,18 @@ function quicklink(url, debug = false) {
                 console.log('firstImg:', firstImg);
                 console.log('dataImg:', dataImg);
                 console.log('domain:', domain)
+                console.log('favicon:', favicon)
+            }
                 // console.log('getImg:', getImg[1].attribs['src']);
             
-            }
+        
             resolve({
+                domain:domain,
                 title: title,
                 firstP: firstP,
-                firstImg: firstImg,
-                domain:domain,
+                firstImg: firstImg === undefined ? favicon : firstImg,
+
+                
 
             })
 
